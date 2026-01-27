@@ -165,6 +165,30 @@ function renderCart() {
 
 function generateTicket() {
     const now = new Date();
+// Enviar pedido a Firebase
+    fetch("/api/pedidos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            usuario: currentUser,
+            items: cart
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            alert("Error al guardar pedido");
+            console.error(data.error);
+        } else {
+            console.log("Pedido guardado:", data.pedido_id);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert("No se pudo guardar el pedido");
+    });
     const fecha = now.toLocaleDateString('es-PE');
     const hora = now.toLocaleTimeString('es-PE');
 
