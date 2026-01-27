@@ -4,12 +4,14 @@ import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from datetime import datetime
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)
 
 # Inicializar Firebase Admin SDK
-cred = credentials.Certificate('firebase_config.json')
+firebase_json = os.environ.get("FIREBASE_CONFIG")
+cred = credentials.Certificate(json.loads(firebase_json))
 firebase_admin.initialize_app(cred)
 
 # Cliente de Firestore
