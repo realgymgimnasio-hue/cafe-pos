@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Bar 40° - Sistema POS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ Café Bar 40°</h1>
+            <p>Sistema POS</p>
+        </div>
+
+        <div class="content">
+            <!-- Login Screen -->
+            <div class="login-screen" id="loginScreen">
+                <div class="error-msg" id="errorMsg"></div>
+                <div class="success-msg" id="successMsg"></div>
+                
+                <div class="input-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="Ingrese su usuario" autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </div>
+
+                <button class="btn" onclick="login()">Ingresar al Sistema</button>
+            </div>
+
+            <!-- Menu Screen -->
+            <div class="menu-screen" id="menuScreen">
+                <div class="welcome-bar">
+                    <div class="welcome-text">
+                        👋 Bienvenido, <strong id="currentUser"></strong>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                            <span id="lastAccess"></span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+                </div>
+
+                <h2 style="color: #000000; margin-bottom: 20px;">☕ Nuestra Carta</h2>
+                <div class="menu-grid" id="menuGrid"></div>
+
+                <div class="cart-section">
+                    <h2>🛒 Tu Pedido</h2>
+                    <div id="cartItems"></div>
+                    <div class="cart-total" id="cartTotal" style="display: none;">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">S/. 0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>IGV (18%):</span>
+                            <span id="igv">S/. 0.00</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>TOTAL A PAGAR:</span>
+                            <span id="total">S/. 0.00</span>
+                        </div>
+                        <button class="checkout-btn" onclick="generateTicket()">
+                            Finalizar Compra 🎫
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket Screen -->
+            <div class="ticket-screen" id="ticketScreen">
+                <div class="ticket" id="ticket"></div>
+                <button class="new-order-btn" onclick="newOrder()">Nueva Orden</button>
+                <button class="new-order-btn" style="background: #6c757d; margin-top: 10px;" onclick="window.print()">
+                    Imprimir Ticket 🖨️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
