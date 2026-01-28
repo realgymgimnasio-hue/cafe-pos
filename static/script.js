@@ -308,3 +308,44 @@ function closeHistory() {
     document.getElementById("historyScreen").style.display = "none";
     document.getElementById("menuScreen").style.display = "block";
 }
+function loadReport() {
+
+    fetch("/api/reportes/ventas")
+        .then(res => res.json())
+        .then(data => {
+
+            if (!data.success) {
+                alert("Error al cargar reporte");
+                return;
+            }
+
+            const report = data.reporte;
+
+            let html = `
+                <p><strong>Fecha:</strong> ${report.fecha}</p>
+                <p><strong>Total Ventas:</strong> S/. ${report.total_ventas.toFixed(2)}</p>
+                <p><strong>Total Pedidos:</strong> ${report.total_pedidos}</p>
+                <h3>Productos Vendidos</h3>
+            `;
+
+            for (const producto in report.productos_vendidos) {
+                html += `<p>${producto}: ${report.productos_vendidos[producto]}</p>`;
+            }
+
+            document.getElementById("reportContent").innerHTML = html;
+
+            document.getElementById("menuScreen").style.display = "none";
+            document.getElementById("reportScreen").style.display = "block";
+
+        })
+        .catch(err => {
+            console.error(err);
+            alert("No se pudo cargar reporte");
+        });
+}
+
+
+function closeReport() {
+    document.getElementById("reportScreen").style.display = "none";
+    document.getElementById("menuScreen").style.display = "block";
+}
