@@ -189,45 +189,40 @@ def obtener_pedidos():
 
 @app.route('/api/reportes/ventas', methods=['GET'])
 def reporte_ventas():
-    """Generar reporte de ventas"""
     try:
-        fecha = request.args.get('fecha')  # formato: dd/mm/yyyy
-        
-        query = db.collection('pedidos')
-        if fecha:
-            query = query.where('fecha', '==', fecha)
-        
-        pedidos = query.stream()
-        
+        pedidos_ref = db.collection('pedidos').stream()
+
         total_ventas = 0
         total_pedidos = 0
         productos_vendidos = {}
-        
-        for doc in pedidos:
+
+        for doc in pedidos_ref:
             pedido = doc.to_dict()
-            total_ventas += pedido.get('total', 0)
+
+            total_ventas += float(pedido.get('total', 0))
             total_pedidos += 1
-            
-            # Contar productos
+
             for item in pedido.get('items', []):
                 nombre = item['nombre']
-                cantidad = item['cantidad']
+                cantidad = int(item['cantidad'])
+
                 if nombre in productos_vendidos:
                     productos_vendidos[nombre] += cantidad
                 else:
                     productos_vendidos[nombre] = cantidad
-        
+
         return jsonify({
             'success': True,
             'reporte': {
-                'fecha': fecha or 'Todas las fechas',
+                'fecha': 'Todas las fechas',
                 'total_ventas': total_ventas,
                 'total_pedidos': total_pedidos,
                 'productos_vendidos': productos_vendidos
             }
         })
-        
+
     except Exception as e:
+        print("ERROR REPORTE:", e)
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # ==================== INICIALIZACIÓN ====================
