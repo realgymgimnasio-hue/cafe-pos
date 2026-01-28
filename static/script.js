@@ -255,3 +255,56 @@ function newOrder() {
     document.getElementById('menuScreen').style.display = 'block';
     renderCart();
 }
+function loadHistory() {
+
+    fetch("/api/pedidos")
+        .then(res => res.json())
+        .then(data => {
+
+            if (!data.success) {
+                alert("Error al cargar historial");
+                return;
+            }
+
+            const pedidos = data.pedidos;
+
+            let html = "";
+
+            if (pedidos.length === 0) {
+                html = "<p>No hay ventas registradas</p>";
+            } else {
+
+                pedidos.forEach(pedido => {
+
+                    html += `
+                        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                            <strong>${pedido.fecha} ${pedido.hora}</strong><br>
+                            Usuario: ${pedido.usuario}<br>
+                            Total: <strong>S/. ${pedido.total.toFixed(2)}</strong>
+                            <div style="margin-top:6px;">
+                                ${pedido.items.map(item => 
+                                    `${item.nombre} x${item.cantidad}`
+                                ).join("<br>")}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById("historyContent").innerHTML = html;
+
+            document.getElementById("menuScreen").style.display = "none";
+            document.getElementById("historyScreen").style.display = "block";
+
+        })
+        .catch(err => {
+            console.error(err);
+            alert("No se pudo cargar historial");
+        });
+}
+
+
+function closeHistory() {
+    document.getElementById("historyScreen").style.display = "none";
+    document.getElementById("menuScreen").style.display = "block";
+}

@@ -42,6 +42,12 @@
                         </div>
                     </div>
                     <button class="logout-btn" onclick="logout()">Cerrar Sesión</button>
+                    <button class="new-order-btn" onclick="loadReport()" style="margin-left:10px;">
+                        📊 Reporte
+                    </button>
+                    <button class="new-order-btn" onclick="loadHistory()" style="margin-left:10px;">
+                        🧾 Historial
+                    </button>
                 </div>
 
                 <h2 style="color: #000000; margin-bottom: 20px;">☕ Nuestra Carta</h2>
@@ -78,6 +84,16 @@
                     Imprimir Ticket 🖨️
                 </button>
             </div>
+            <!-- History Screen -->
+            <div class="history-screen" id="historyScreen" style="display:none;">
+                <h2>🧾 Historial de Ventas</h2>
+                <div id="historyContent"></div>
+
+                <button class="new-order-btn" onclick="closeHistory()">
+                    Volver
+                </button>
+            </div>
+
         </div>
     </div>
 
